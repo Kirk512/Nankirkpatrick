@@ -23,14 +23,131 @@ function nk_reviews_render_settings_page() {
 	$last_updated  = get_option( NK_REVIEWS_OPTION_LAST_UPDATED );
 	$last_updated  = $last_updated ? date_i18n( 'Y-m-d H:i:s', (int) $last_updated ) : __( 'Never', 'nk-reviews' );
 	$cache_display = is_string( $cache ) ? $cache : wp_json_encode( $cache );
+	$last_error    = get_option( NK_REVIEWS_OPTION_LAST_ERROR, '' );
+
+	$client_id     = get_option( NK_REVIEWS_OPTION_GOOGLE_CLIENT_ID, '' );
+	$client_secret = get_option( NK_REVIEWS_OPTION_GOOGLE_CLIENT_SECRET, '' );
+	$refresh_token = get_option( NK_REVIEWS_OPTION_GOOGLE_REFRESH_TOKEN, '' );
+	$account_id    = get_option( NK_REVIEWS_OPTION_GOOGLE_ACCOUNT_ID, '' );
+	$location_id   = get_option( NK_REVIEWS_OPTION_GOOGLE_LOCATION_ID, '' );
 	?>
 	<div class="wrap">
 		<h1><?php echo esc_html__( 'NK Reviews Cache', 'nk-reviews' ); ?></h1>
-		<p><?php echo esc_html__( 'Paste cached reviews JSON below and save to update the frontend display.', 'nk-reviews' ); ?></p>
+		<p><?php echo esc_html__( 'Frontend display always uses the cached reviews below.', 'nk-reviews' ); ?></p>
+		<?php if ( isset( $_GET['nk_reviews_synced'] ) ) : ?>
+			<div class="notice notice-success is-dismissible">
+				<p><?php echo esc_html__( 'Reviews synced successfully.', 'nk-reviews' ); ?></p>
+			</div>
+		<?php endif; ?>
+		<?php if ( isset( $_GET['nk_reviews_error'] ) || ! empty( $last_error ) ) : ?>
+			<div class="notice notice-error">
+				<p>
+					<?php echo esc_html__( 'Review sync failed. Cached reviews were kept.', 'nk-reviews' ); ?>
+					<?php if ( ! empty( $last_error ) ) : ?>
+						<?php echo esc_html( ' ' . $last_error ); ?>
+					<?php endif; ?>
+				</p>
+			</div>
+		<?php endif; ?>
 		<p>
 			<strong><?php echo esc_html__( 'Last updated:', 'nk-reviews' ); ?></strong>
 			<?php echo esc_html( $last_updated ); ?>
 		</p>
+		<h2><?php echo esc_html__( 'Google Business Profile Settings', 'nk-reviews' ); ?></h2>
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+			<?php wp_nonce_field( 'nk_reviews_save_settings', 'nk_reviews_settings_nonce' ); ?>
+			<input type="hidden" name="action" value="nk_reviews_save_settings" />
+			<table class="form-table" role="presentation">
+				<tbody>
+					<tr>
+						<th scope="row">
+							<label for="nk-reviews-account-id"><?php echo esc_html__( 'Account ID', 'nk-reviews' ); ?></label>
+						</th>
+						<td>
+							<input
+								type="text"
+								name="nk_reviews_account_id"
+								id="nk-reviews-account-id"
+								class="regular-text"
+								value="<?php echo esc_attr( $account_id ); ?>"
+							/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="nk-reviews-location-id"><?php echo esc_html__( 'Location ID', 'nk-reviews' ); ?></label>
+						</th>
+						<td>
+							<input
+								type="text"
+								name="nk_reviews_location_id"
+								id="nk-reviews-location-id"
+								class="regular-text"
+								value="<?php echo esc_attr( $location_id ); ?>"
+							/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="nk-reviews-client-id"><?php echo esc_html__( 'OAuth Client ID', 'nk-reviews' ); ?></label>
+						</th>
+						<td>
+							<input
+								type="text"
+								name="nk_reviews_client_id"
+								id="nk-reviews-client-id"
+								class="regular-text"
+								value="<?php echo esc_attr( $client_id ); ?>"
+							/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="nk-reviews-client-secret"><?php echo esc_html__( 'OAuth Client Secret', 'nk-reviews' ); ?></label>
+						</th>
+						<td>
+							<input
+								type="password"
+								name="nk_reviews_client_secret"
+								id="nk-reviews-client-secret"
+								class="regular-text"
+								value="<?php echo esc_attr( $client_secret ); ?>"
+							/>
+						</td>
+					</tr>
+					<tr>
+						<th scope="row">
+							<label for="nk-reviews-refresh-token"><?php echo esc_html__( 'OAuth Refresh Token', 'nk-reviews' ); ?></label>
+						</th>
+						<td>
+							<input
+								type="password"
+								name="nk_reviews_refresh_token"
+								id="nk-reviews-refresh-token"
+								class="regular-text"
+								value="<?php echo esc_attr( $refresh_token ); ?>"
+							/>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<p>
+				<button class="button button-primary" type="submit">
+					<?php echo esc_html__( 'Save Settings', 'nk-reviews' ); ?>
+				</button>
+			</p>
+		</form>
+		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+			<?php wp_nonce_field( 'nk_reviews_sync_now', 'nk_reviews_sync_nonce' ); ?>
+			<input type="hidden" name="action" value="nk_reviews_sync_now" />
+			<p>
+				<button class="button" type="submit">
+					<?php echo esc_html__( 'Sync Now', 'nk-reviews' ); ?>
+				</button>
+			</p>
+		</form>
+		<h2><?php echo esc_html__( 'Manual Cache Override', 'nk-reviews' ); ?></h2>
+		<p><?php echo esc_html__( 'Paste cached reviews JSON below and save to update the frontend display.', 'nk-reviews' ); ?></p>
 		<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 			<?php wp_nonce_field( 'nk_reviews_save_cache', 'nk_reviews_nonce' ); ?>
 			<input type="hidden" name="action" value="nk_reviews_save_cache" />
@@ -47,6 +164,36 @@ function nk_reviews_render_settings_page() {
 		</form>
 	</div>
 	<?php
+}
+
+function nk_reviews_handle_save_settings() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( esc_html__( 'Unauthorized.', 'nk-reviews' ) );
+	}
+
+	check_admin_referer( 'nk_reviews_save_settings', 'nk_reviews_settings_nonce' );
+
+	$account_id    = isset( $_POST['nk_reviews_account_id'] ) ? sanitize_text_field( wp_unslash( $_POST['nk_reviews_account_id'] ) ) : '';
+	$location_id   = isset( $_POST['nk_reviews_location_id'] ) ? sanitize_text_field( wp_unslash( $_POST['nk_reviews_location_id'] ) ) : '';
+	$client_id     = isset( $_POST['nk_reviews_client_id'] ) ? sanitize_text_field( wp_unslash( $_POST['nk_reviews_client_id'] ) ) : '';
+	$client_secret = isset( $_POST['nk_reviews_client_secret'] ) ? sanitize_text_field( wp_unslash( $_POST['nk_reviews_client_secret'] ) ) : '';
+	$refresh_token = isset( $_POST['nk_reviews_refresh_token'] ) ? sanitize_text_field( wp_unslash( $_POST['nk_reviews_refresh_token'] ) ) : '';
+
+	update_option( NK_REVIEWS_OPTION_GOOGLE_ACCOUNT_ID, $account_id );
+	update_option( NK_REVIEWS_OPTION_GOOGLE_LOCATION_ID, $location_id );
+	update_option( NK_REVIEWS_OPTION_GOOGLE_CLIENT_ID, $client_id );
+	update_option( NK_REVIEWS_OPTION_GOOGLE_CLIENT_SECRET, $client_secret );
+	update_option( NK_REVIEWS_OPTION_GOOGLE_REFRESH_TOKEN, $refresh_token );
+
+	wp_safe_redirect(
+		add_query_arg(
+			[
+				'page' => 'nk-reviews',
+			],
+			admin_url( 'options-general.php' )
+		)
+	);
+	exit;
 }
 
 function nk_reviews_handle_save_cache() {
