@@ -21,11 +21,110 @@ class NK_Core {
 		self::register_closing_post_type();
 		self::register_closing_taxonomy();
 		self::register_closing_meta();
+		self::register_block_patterns();
 
 		add_filter( 'manage_event_posts_columns', array( __CLASS__, 'add_event_year_column' ) );
 		add_action( 'manage_event_posts_custom_column', array( __CLASS__, 'render_event_year_column' ), 10, 2 );
 		add_action( 'add_meta_boxes', array( __CLASS__, 'register_closing_meta_box' ) );
 		add_action( 'save_post_closing', array( __CLASS__, 'save_closing_meta' ), 10, 2 );
+	}
+
+	/**
+	 * Register block patterns.
+	 */
+	private static function register_block_patterns(): void {
+		if ( ! function_exists( 'register_block_pattern' ) ) {
+			return;
+		}
+
+		if ( function_exists( 'register_block_pattern_category' ) ) {
+			register_block_pattern_category(
+				'nk-core',
+				array(
+					'label' => __( 'NK Core', 'nk-core' ),
+				)
+			);
+		}
+
+		register_block_pattern(
+			'nk-core/home-hero',
+			array(
+				'title'       => __( 'Home Hero', 'nk-core' ),
+				'description' => __( 'Homepage hero with headline, subhead, and apply button.', 'nk-core' ),
+				'categories'  => array( 'nk-core' ),
+				'content'     => '<!-- wp:group {"tagName":"section","layout":{"type":"constrained"}} -->
+<section class="wp-block-group">
+<!-- wp:heading {"level":1} -->
+<h1>Guiding you home with confidence.</h1>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Local mortgage expertise with options tailored to your goals.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:buttons -->
+<div class="wp-block-buttons">
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link" href="/apply">Apply now</a></div>
+<!-- /wp:button -->
+</div>
+<!-- /wp:buttons -->
+</section>
+<!-- /wp:group -->',
+			)
+		);
+
+		register_block_pattern(
+			'nk-core/reviews-preview',
+			array(
+				'title'       => __( 'Reviews Preview', 'nk-core' ),
+				'description' => __( 'Heading and reviews shortcode block.', 'nk-core' ),
+				'categories'  => array( 'nk-core' ),
+				'content'     => '<!-- wp:group {"tagName":"section","layout":{"type":"constrained"}} -->
+<section class="wp-block-group">
+<!-- wp:heading {"level":2} -->
+<h2>Borrowers are saying great things.</h2>
+<!-- /wp:heading -->
+
+<!-- wp:shortcode -->
+[nk_reviews]
+<!-- /wp:shortcode -->
+</section>
+<!-- /wp:group -->',
+			)
+		);
+
+		register_block_pattern(
+			'nk-core/cta-strip',
+			array(
+				'title'       => __( 'CTA Strip', 'nk-core' ),
+				'description' => __( 'Apply, call, and email call-to-action strip.', 'nk-core' ),
+				'categories'  => array( 'nk-core' ),
+				'content'     => '<!-- wp:group {"tagName":"section","layout":{"type":"constrained"}} -->
+<section class="wp-block-group">
+<!-- wp:heading {"level":2} -->
+<h2>Ready to get started?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:buttons -->
+<div class="wp-block-buttons">
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link" href="/apply">Apply</a></div>
+<!-- /wp:button -->
+
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link" href="tel:+15555555555">Call</a></div>
+<!-- /wp:button -->
+
+<!-- wp:button -->
+<div class="wp-block-button"><a class="wp-block-button__link" href="mailto:hello@nankirkpatrick.com">Email</a></div>
+<!-- /wp:button -->
+</div>
+<!-- /wp:buttons -->
+</section>
+<!-- /wp:group -->',
+			)
+		);
 	}
 
 	/**
