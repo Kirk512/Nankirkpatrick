@@ -26,8 +26,6 @@ function nk_reviews_render_settings_page() {
 	$last_error    = get_option( NK_REVIEWS_OPTION_LAST_ERROR, '' );
 
 	$client_id     = get_option( NK_REVIEWS_OPTION_GOOGLE_CLIENT_ID, '' );
-	$client_secret = get_option( NK_REVIEWS_OPTION_GOOGLE_CLIENT_SECRET, '' );
-	$refresh_token = get_option( NK_REVIEWS_OPTION_GOOGLE_REFRESH_TOKEN, '' );
 	$account_id    = get_option( NK_REVIEWS_OPTION_GOOGLE_ACCOUNT_ID, '' );
 	$location_id   = get_option( NK_REVIEWS_OPTION_GOOGLE_LOCATION_ID, '' );
 	?>
@@ -37,6 +35,22 @@ function nk_reviews_render_settings_page() {
 		<?php if ( isset( $_GET['nk_reviews_synced'] ) ) : ?>
 			<div class="notice notice-success is-dismissible">
 				<p><?php echo esc_html__( 'Reviews synced successfully.', 'nk-reviews' ); ?></p>
+			</div>
+		<?php endif; ?>
+		<?php if ( isset( $_GET['nk_reviews_secrets_notice'] ) ) : ?>
+			<div class="notice notice-success is-dismissible">
+				<p>
+					<?php
+					$secrets_notice = sanitize_text_field( wp_unslash( $_GET['nk_reviews_secrets_notice'] ) );
+					if ( 'updated' === $secrets_notice ) {
+						echo esc_html__( 'OAuth secrets updated.', 'nk-reviews' );
+					} elseif ( 'unchanged' === $secrets_notice ) {
+						echo esc_html__( 'OAuth secrets left unchanged.', 'nk-reviews' );
+					} else {
+						echo esc_html__( 'OAuth secrets updated where provided; empty fields were left unchanged.', 'nk-reviews' );
+					}
+					?>
+				</p>
 			</div>
 		<?php endif; ?>
 		<?php if ( isset( $_GET['nk_reviews_error'] ) || ! empty( $last_error ) ) : ?>
@@ -111,8 +125,9 @@ function nk_reviews_render_settings_page() {
 								name="nk_reviews_client_secret"
 								id="nk-reviews-client-secret"
 								class="regular-text"
-								value="<?php echo esc_attr( $client_secret ); ?>"
+								value=""
 							/>
+							<p class="description"><?php echo esc_html__( 'Leave blank to keep existing value.', 'nk-reviews' ); ?></p>
 						</td>
 					</tr>
 					<tr>
@@ -125,8 +140,9 @@ function nk_reviews_render_settings_page() {
 								name="nk_reviews_refresh_token"
 								id="nk-reviews-refresh-token"
 								class="regular-text"
-								value="<?php echo esc_attr( $refresh_token ); ?>"
+								value=""
 							/>
+							<p class="description"><?php echo esc_html__( 'Leave blank to keep existing value.', 'nk-reviews' ); ?></p>
 						</td>
 					</tr>
 				</tbody>
@@ -182,13 +198,33 @@ function nk_reviews_handle_save_settings() {
 	update_option( NK_REVIEWS_OPTION_GOOGLE_ACCOUNT_ID, $account_id );
 	update_option( NK_REVIEWS_OPTION_GOOGLE_LOCATION_ID, $location_id );
 	update_option( NK_REVIEWS_OPTION_GOOGLE_CLIENT_ID, $client_id );
-	update_option( NK_REVIEWS_OPTION_GOOGLE_CLIENT_SECRET, $client_secret );
-	update_option( NK_REVIEWS_OPTION_GOOGLE_REFRESH_TOKEN, $refresh_token );
+
+	$updated_secret  = false;
+	$updated_refresh = false;
+
+	if ( '' !== $client_secret ) {
+		update_option( NK_REVIEWS_OPTION_GOOGLE_CLIENT_SECRET, $client_secret );
+		$updated_secret = true;
+	}
+
+	if ( '' !== $refresh_token ) {
+		update_option( NK_REVIEWS_OPTION_GOOGLE_REFRESH_TOKEN, $refresh_token );
+		$updated_refresh = true;
+	}
+
+	if ( $updated_secret && $updated_refresh ) {
+		$secrets_notice = 'updated';
+	} elseif ( ! $updated_secret && ! $updated_refresh ) {
+		$secrets_notice = 'unchanged';
+	} else {
+		$secrets_notice = 'partial';
+	}
 
 	wp_safe_redirect(
 		add_query_arg(
 			[
-				'page' => 'nk-reviews',
+				'page'                     => 'nk-reviews',
+				'nk_reviews_secrets_notice' => $secrets_notice,
 			],
 			admin_url( 'options-general.php' )
 		)
