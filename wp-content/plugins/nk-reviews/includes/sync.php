@@ -5,6 +5,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 function nk_reviews_activate() {
+	nk_reviews_disable_autoload_for_options(
+		[
+			NK_REVIEWS_OPTION_CACHE,
+			NK_REVIEWS_OPTION_LAST_ERROR,
+			NK_REVIEWS_OPTION_GOOGLE_CLIENT_SECRET,
+			NK_REVIEWS_OPTION_GOOGLE_REFRESH_TOKEN,
+		]
+	);
 	nk_reviews_ensure_cron_scheduled();
 }
 
@@ -16,12 +24,23 @@ function nk_reviews_deactivate() {
 }
 
 function nk_reviews_ensure_cron_scheduled() {
-	if ( ! wp_next_scheduled( NK_REVIEWS_CRON_HOOK ) ) {
-		wp_schedule_event( time(), 'daily', NK_REVIEWS_CRON_HOOK );
+	$event = wp_get_scheduled_event( NK_REVIEWS_CRON_HOOK );
+	if ( $event && 'weekly' !== $event->schedule ) {
+		wp_unschedule_event( $event->timestamp, NK_REVIEWS_CRON_HOOK );
+		$event = false;
+	}
+
+	if ( ! $event ) {
+		wp_schedule_event( time(), 'weekly', NK_REVIEWS_CRON_HOOK );
 	}
 }
 
 function nk_reviews_handle_cron_sync() {
+	$last_updated = (int) get_option( NK_REVIEWS_OPTION_LAST_UPDATED, 0 );
+	if ( $last_updated > 0 && ( current_time( 'timestamp' ) - $last_updated ) < ( 3 * DAY_IN_SECONDS ) ) {
+		return;
+	}
+
 	nk_reviews_sync_reviews( 'cron' );
 }
 
@@ -61,6 +80,48 @@ function nk_reviews_sync_reviews( $context ) {
 	delete_option( NK_REVIEWS_OPTION_LAST_ERROR );
 
 	return true;
+}
+
+function nk_reviews_add_cron_schedules( $schedules ) {
+	if ( ! isset( $schedules['weekly'] ) ) {
+		$schedules['weekly'] = [
+			'interval' => 7 * DAY_IN_SECONDS,
+			'display'  => __( 'Once Weekly', 'nk-reviews' ),
+		];
+	}
+
+	return $schedules;
+}
+
+function nk_reviews_disable_autoload_for_options( array $keys ) {
+	if ( empty( $keys ) ) {
+		return;
+	}
+
+	$keys = array_values( array_filter( array_unique( $keys ) ) );
+	if ( empty( $keys ) ) {
+		return;
+	}
+
+	if ( function_exists( 'wp_set_option_autoload' ) ) {
+		foreach ( $keys as $key ) {
+			wp_set_option_autoload( $key, false );
+		}
+
+		return;
+	}
+
+	global $wpdb;
+
+	foreach ( $keys as $key ) {
+		$wpdb->update(
+			$wpdb->options,
+			[ 'autoload' => 'no' ],
+			[ 'option_name' => $key ],
+			[ '%s' ],
+			[ '%s' ]
+		);
+	}
 }
 
 function nk_reviews_fetch_google_reviews() {
