@@ -4,7 +4,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-function nk_reviews_render_shortcode() {
+function nk_reviews_render_shortcode( $attributes = [] ) {
+	$attributes = shortcode_atts(
+		[
+			'default_filter' => 'mentions_nan',
+			'keyword'        => 'nan',
+			'allow_show_all' => '1',
+		],
+		$attributes,
+		'nk_reviews'
+	);
+
+	$default_filter = sanitize_key( $attributes['default_filter'] );
+	$keyword        = sanitize_text_field( $attributes['keyword'] );
+	$allow_show_all = filter_var( $attributes['allow_show_all'], FILTER_VALIDATE_BOOLEAN );
+
+	if ( '' === $keyword ) {
+		$keyword = 'nan';
+	}
+
 	$cache = get_option( NK_REVIEWS_OPTION_CACHE, '[]' );
 	if ( ! is_string( $cache ) ) {
 		$cache = wp_json_encode( $cache );
@@ -20,6 +38,7 @@ function nk_reviews_render_shortcode() {
 
 	$container_id = 'nk-reviews-' . wp_generate_uuid4();
 	$overall_count = count( $reviews );
+	$show_all_by_default = 'mentions_nan' !== $default_filter;
 
 	ob_start();
 	?>
@@ -34,21 +53,23 @@ function nk_reviews_render_shortcode() {
 				<span class="nk-reviews__updated"><?php echo esc_html( $last_updated ); ?></span>
 			</p>
 		</div>
-		<div class="nk-reviews__filters">
-			<label>
-				<input type="checkbox" class="nk-reviews__filter" />
-				<?php echo esc_html__( 'Mentions Nan', 'nk-reviews' ); ?>
-			</label>
-		</div>
+		<p class="nk-reviews__status"><?php echo esc_html__( 'Showing reviews that mention Nan.', 'nk-reviews' ); ?></p>
+		<?php if ( $allow_show_all ) : ?>
+			<div class="nk-reviews__filters">
+				<button type="button" class="nk-reviews__toggle" aria-pressed="<?php echo $show_all_by_default ? 'true' : 'false'; ?>">
+					<?php echo esc_html__( 'Show all reviews', 'nk-reviews' ); ?>
+				</button>
+			</div>
+		<?php endif; ?>
 		<div class="nk-reviews__list">
 			<?php foreach ( $reviews as $review ) :
 				$author = isset( $review['author'] ) ? (string) $review['author'] : '';
 				$rating = isset( $review['rating'] ) ? (string) $review['rating'] : '';
 				$date   = isset( $review['date'] ) ? (string) $review['date'] : '';
 				$text   = isset( $review['text'] ) ? (string) $review['text'] : '';
-				$filter_text = strtolower( $text );
+				$matches = '' === $keyword ? true : false !== stripos( $text, $keyword );
 				?>
-				<div class="nk-reviews__item" data-review-text="<?php echo esc_attr( $filter_text ); ?>">
+				<div class="nk-reviews__item" data-matches="<?php echo $matches ? '1' : '0'; ?>">
 					<p class="nk-reviews__meta">
 						<strong class="nk-reviews__author"><?php echo esc_html( $author ); ?></strong>
 						<span class="nk-reviews__rating"><?php echo esc_html( $rating ); ?></span>
@@ -65,18 +86,41 @@ function nk_reviews_render_shortcode() {
 			if (!container) {
 				return;
 			}
-			const toggle = container.querySelector('.nk-reviews__filter');
+			const toggle = container.querySelector('.nk-reviews__toggle');
+			const status = container.querySelector('.nk-reviews__status');
 			const items = Array.from(container.querySelectorAll('.nk-reviews__item'));
-			const applyFilter = () => {
-				const shouldFilter = toggle && toggle.checked;
-				items.forEach((item) => {
-					const text = (item.getAttribute('data-review-text') || '').toLowerCase();
-					const matches = text.includes('nan');
-					item.style.display = !shouldFilter || matches ? '' : 'none';
-				});
+			let showAll = <?php echo wp_json_encode( $show_all_by_default ); ?>;
+
+			const updateStatus = () => {
+				if (!status) {
+					return;
+				}
+				status.textContent = showAll
+					? <?php echo wp_json_encode( __( 'Showing all reviews.', 'nk-reviews' ) ); ?>
+					: <?php echo wp_json_encode( __( 'Showing reviews that mention Nan.', 'nk-reviews' ) ); ?>;
 			};
+
+			const applyFilter = () => {
+				items.forEach((item) => {
+					const matches = item.getAttribute('data-matches') === '1';
+					item.style.display = showAll || matches ? '' : 'none';
+				});
+				updateStatus();
+				if (toggle) {
+					toggle.setAttribute('aria-pressed', showAll ? 'true' : 'false');
+					toggle.textContent = showAll
+						? <?php echo wp_json_encode( __( 'Show only reviews that mention Nan', 'nk-reviews' ) ); ?>
+						: <?php echo wp_json_encode( __( 'Show all reviews', 'nk-reviews' ) ); ?>;
+				}
+			};
+
+			applyFilter();
+
 			if (toggle) {
-				toggle.addEventListener('change', applyFilter);
+				toggle.addEventListener('click', () => {
+					showAll = !showAll;
+					applyFilter();
+				});
 			}
 		})();
 	</script>
