@@ -65,7 +65,7 @@ class NK_Core {
 <!-- wp:buttons -->
 <div class="wp-block-buttons">
 <!-- wp:button -->
-<div class="wp-block-button"><a class="wp-block-button__link" href="/apply">Apply now</a></div>
+<div class="wp-block-button"><a class="wp-block-button__link" href="https://www.applywithnan.com">Apply now</a></div>
 <!-- /wp:button -->
 </div>
 <!-- /wp:buttons -->
@@ -109,7 +109,7 @@ class NK_Core {
 <!-- wp:buttons -->
 <div class="wp-block-buttons">
 <!-- wp:button -->
-<div class="wp-block-button"><a class="wp-block-button__link" href="/apply">Apply</a></div>
+<div class="wp-block-button"><a class="wp-block-button__link" href="https://www.applywithnan.com">Apply</a></div>
 <!-- /wp:button -->
 
 <!-- wp:button -->
