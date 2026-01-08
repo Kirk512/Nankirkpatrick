@@ -36,7 +36,7 @@ add_shortcode( 'nk_reviews', 'nk_reviews_render_shortcode' );
 
 add_filter( 'cron_schedules', 'nk_reviews_add_cron_schedules' );
 add_action( NK_REVIEWS_CRON_HOOK, 'nk_reviews_handle_cron_sync' );
-add_action( 'init', 'nk_reviews_ensure_cron_scheduled' );
+add_action( 'admin_init', 'nk_reviews_maybe_repair_cron_schedule' );
 
 register_activation_hook( __FILE__, 'nk_reviews_activate' );
 register_deactivation_hook( __FILE__, 'nk_reviews_deactivate' );
