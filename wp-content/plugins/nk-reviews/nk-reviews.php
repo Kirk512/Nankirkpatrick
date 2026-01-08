@@ -34,6 +34,7 @@ add_action( 'admin_post_nk_reviews_save_settings', 'nk_reviews_handle_save_setti
 add_action( 'admin_post_nk_reviews_sync_now', 'nk_reviews_handle_sync_now' );
 add_shortcode( 'nk_reviews', 'nk_reviews_render_shortcode' );
 
+add_filter( 'cron_schedules', 'nk_reviews_add_cron_schedules' );
 add_action( NK_REVIEWS_CRON_HOOK, 'nk_reviews_handle_cron_sync' );
 add_action( 'init', 'nk_reviews_ensure_cron_scheduled' );
 
