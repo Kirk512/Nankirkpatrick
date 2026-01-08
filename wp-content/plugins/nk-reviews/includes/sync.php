@@ -70,13 +70,13 @@ function nk_reviews_handle_sync_now() {
 function nk_reviews_sync_reviews( $context ) {
 	$result = nk_reviews_fetch_google_reviews();
 	if ( is_wp_error( $result ) ) {
-		update_option( NK_REVIEWS_OPTION_LAST_ERROR, $result->get_error_message() );
+		nk_reviews_update_option_noautoload( NK_REVIEWS_OPTION_LAST_ERROR, $result->get_error_message() );
 		return false;
 	}
 
 	$payload = wp_json_encode( $result );
-	update_option( NK_REVIEWS_OPTION_CACHE, $payload );
-	update_option( NK_REVIEWS_OPTION_LAST_UPDATED, current_time( 'timestamp' ) );
+	nk_reviews_update_option_noautoload( NK_REVIEWS_OPTION_CACHE, $payload );
+	nk_reviews_update_option_noautoload( NK_REVIEWS_OPTION_LAST_UPDATED, current_time( 'timestamp' ) );
 	delete_option( NK_REVIEWS_OPTION_LAST_ERROR );
 
 	return true;
@@ -122,6 +122,31 @@ function nk_reviews_disable_autoload_for_options( array $keys ) {
 			[ '%s' ]
 		);
 	}
+}
+
+function nk_reviews_update_option_noautoload( $key, $value ) {
+	$existing = get_option( $key, null );
+
+	if ( null === $existing ) {
+		add_option( $key, $value, '', false );
+	} else {
+		update_option( $key, $value );
+	}
+
+	if ( function_exists( 'wp_set_option_autoload' ) ) {
+		wp_set_option_autoload( $key, false );
+		return;
+	}
+
+	global $wpdb;
+
+	$wpdb->update(
+		$wpdb->options,
+		[ 'autoload' => 'no' ],
+		[ 'option_name' => $key ],
+		[ '%s' ],
+		[ '%s' ]
+	);
 }
 
 function nk_reviews_fetch_google_reviews() {

@@ -203,12 +203,12 @@ function nk_reviews_handle_save_settings() {
 	$updated_refresh = false;
 
 	if ( '' !== $client_secret ) {
-		update_option( NK_REVIEWS_OPTION_GOOGLE_CLIENT_SECRET, $client_secret );
+		nk_reviews_update_option_noautoload( NK_REVIEWS_OPTION_GOOGLE_CLIENT_SECRET, $client_secret );
 		$updated_secret = true;
 	}
 
 	if ( '' !== $refresh_token ) {
-		update_option( NK_REVIEWS_OPTION_GOOGLE_REFRESH_TOKEN, $refresh_token );
+		nk_reviews_update_option_noautoload( NK_REVIEWS_OPTION_GOOGLE_REFRESH_TOKEN, $refresh_token );
 		$updated_refresh = true;
 	}
 
@@ -261,8 +261,8 @@ function nk_reviews_handle_save_cache() {
 		];
 	}
 
-	update_option( NK_REVIEWS_OPTION_CACHE, wp_json_encode( $sanitized ) );
-	update_option( NK_REVIEWS_OPTION_LAST_UPDATED, current_time( 'timestamp' ) );
+	nk_reviews_update_option_noautoload( NK_REVIEWS_OPTION_CACHE, wp_json_encode( $sanitized ) );
+	nk_reviews_update_option_noautoload( NK_REVIEWS_OPTION_LAST_UPDATED, current_time( 'timestamp' ) );
 
 	wp_safe_redirect( add_query_arg( 'page', 'nk-reviews', admin_url( 'options-general.php' ) ) );
 	exit;
