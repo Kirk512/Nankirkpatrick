@@ -30,8 +30,8 @@ Content types:
 ## Google Reviews
 - Pull reviews from the **Google Business Profile API**.
 - Cache responses in WordPress and render from cache.
-- Provide a UI filter toggle **“Mentions Nan”**.
-  - The toggle should not hide reviews by default.
+- Default behavior: filter **on** to show only reviews that mention Nan.
+- Provide a UI toggle to show **all cached reviews**.
 
 ## Compliance notes
 - Avoid MLS photo/price usage unless rights are explicitly confirmed.
