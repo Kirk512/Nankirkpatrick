@@ -39,14 +39,32 @@ function nk_reviews_render_shortcode( $attributes = [] ) {
 	$container_id = 'nk-reviews-' . wp_generate_uuid4();
 	$overall_count = count( $reviews );
 	$show_all_by_default = 'mentions_nan' !== $default_filter;
+	$matched_count = 0;
+
+	foreach ( $reviews as $review ) {
+		$text = isset( $review['text'] ) ? (string) $review['text'] : '';
+		$matches = '' === $keyword ? true : false !== stripos( $text, $keyword );
+		if ( $matches ) {
+			$matched_count++;
+		}
+	}
+
+	$shown_count = $show_all_by_default ? $overall_count : $matched_count;
 
 	ob_start();
 	?>
 	<div class="nk-reviews" id="<?php echo esc_attr( $container_id ); ?>">
 		<div class="nk-reviews__summary">
 			<p>
-				<strong><?php echo esc_html__( 'Total reviews:', 'nk-reviews' ); ?></strong>
+				<strong><?php echo esc_html__( 'Cached reviews:', 'nk-reviews' ); ?></strong>
 				<span class="nk-reviews__count"><?php echo esc_html( $overall_count ); ?></span>
+			</p>
+			<p>
+				<strong><?php echo esc_html__( 'Showing:', 'nk-reviews' ); ?></strong>
+				<span class="nk-reviews__shown-count"><?php echo esc_html( $shown_count ); ?></span>
+				<span><?php echo esc_html__( 'of', 'nk-reviews' ); ?></span>
+				<span class="nk-reviews__total-count"><?php echo esc_html( $overall_count ); ?></span>
+				<span><?php echo esc_html__( 'cached reviews', 'nk-reviews' ); ?></span>
 			</p>
 			<p>
 				<strong><?php echo esc_html__( 'Last updated:', 'nk-reviews' ); ?></strong>
@@ -88,6 +106,7 @@ function nk_reviews_render_shortcode( $attributes = [] ) {
 			}
 			const toggle = container.querySelector('.nk-reviews__toggle');
 			const status = container.querySelector('.nk-reviews__status');
+			const shownCount = container.querySelector('.nk-reviews__shown-count');
 			const items = Array.from(container.querySelectorAll('.nk-reviews__item'));
 			let showAll = <?php echo wp_json_encode( $show_all_by_default ); ?>;
 
@@ -101,11 +120,19 @@ function nk_reviews_render_shortcode( $attributes = [] ) {
 			};
 
 			const applyFilter = () => {
+				let shown = 0;
 				items.forEach((item) => {
 					const matches = item.getAttribute('data-matches') === '1';
-					item.style.display = showAll || matches ? '' : 'none';
+					const shouldShow = showAll || matches;
+					item.style.display = shouldShow ? '' : 'none';
+					if (shouldShow) {
+						shown += 1;
+					}
 				});
 				updateStatus();
+				if (shownCount) {
+					shownCount.textContent = String(shown);
+				}
 				if (toggle) {
 					toggle.setAttribute('aria-pressed', showAll ? 'true' : 'false');
 					toggle.textContent = showAll
