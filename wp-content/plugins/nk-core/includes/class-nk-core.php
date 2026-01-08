@@ -22,6 +22,7 @@ class NK_Core {
 		self::register_closing_taxonomy();
 		self::register_closing_meta();
 		self::register_block_patterns();
+		self::register_shortcodes();
 
 		add_filter( 'manage_event_posts_columns', array( __CLASS__, 'add_event_year_column' ) );
 		add_action( 'manage_event_posts_custom_column', array( __CLASS__, 'render_event_year_column' ), 10, 2 );
@@ -353,7 +354,7 @@ class NK_Core {
 	 * Register Closing metadata.
 	 */
 	private static function register_closing_meta(): void {
-		$default_disclaimer = 'Nan Kirkpatrick acted as the mortgage loan originator, not the listing agent. Information shown is for illustrative purposes only; results vary.';
+		$default_disclaimer = self::get_default_closing_disclaimer();
 		$meta_fields = array(
 			'closing_city'          => array(
 				'type'              => 'string',
@@ -417,7 +418,7 @@ class NK_Core {
 	 * @param WP_Post $post Post object.
 	 */
 	public static function render_closing_meta_box( WP_Post $post ): void {
-		$default_disclaimer = 'Nan Kirkpatrick acted as the mortgage loan originator, not the listing agent. Information shown is for illustrative purposes only; results vary.';
+		$default_disclaimer = self::get_default_closing_disclaimer();
 		wp_nonce_field( 'save_closing_meta', 'closing_meta_nonce' );
 		$fields = array(
 			'closing_city'          => array( 'label' => __( 'City', 'nk-core' ) ),
@@ -446,6 +447,48 @@ class NK_Core {
 		echo '<td><textarea class="large-text" rows="3" id="closing_disclaimer" name="closing_disclaimer">' . esc_textarea( $disclaimer_value ) . '</textarea></td>';
 		echo '</tr>';
 		echo '</tbody></table>';
+	}
+
+	/**
+	 * Register shortcode handlers.
+	 */
+	private static function register_shortcodes(): void {
+		add_shortcode( 'nk_closing_disclaimer', array( __CLASS__, 'render_closing_disclaimer_shortcode' ) );
+	}
+
+	/**
+	 * Render the closing disclaimer shortcode.
+	 *
+	 * @return string
+	 */
+	public static function render_closing_disclaimer_shortcode(): string {
+		if ( ! is_singular( 'closing' ) ) {
+			return '';
+		}
+
+		$post_id = get_queried_object_id();
+		if ( 0 === $post_id ) {
+			return '';
+		}
+
+		$disclaimer = get_post_meta( $post_id, 'closing_disclaimer', true );
+		if ( '' === $disclaimer ) {
+			$disclaimer = self::get_default_closing_disclaimer();
+		}
+
+		return sprintf(
+			'<p class="nk-closing-disclaimer">%s</p>',
+			esc_html( $disclaimer )
+		);
+	}
+
+	/**
+	 * Get the default closing disclaimer text.
+	 *
+	 * @return string
+	 */
+	private static function get_default_closing_disclaimer(): string {
+		return 'Nan Kirkpatrick acted as the mortgage loan originator, not the listing agent. Information shown is for illustrative purposes only; results vary.';
 	}
 
 	/**
