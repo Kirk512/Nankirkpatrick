@@ -113,11 +113,11 @@ class NK_Core {
 <!-- /wp:button -->
 
 <!-- wp:button -->
-<div class="wp-block-button"><a class="wp-block-button__link" href="tel:+15555555555">Call</a></div>
+<div class="wp-block-button"><a class="wp-block-button__link" href="tel:+15123357800">Call</a></div>
 <!-- /wp:button -->
 
 <!-- wp:button -->
-<div class="wp-block-button"><a class="wp-block-button__link" href="mailto:hello@nankirkpatrick.com">Email</a></div>
+<div class="wp-block-button"><a class="wp-block-button__link" href="mailto:nan@abundancehomemtg.com">Email</a></div>
 <!-- /wp:button -->
 </div>
 <!-- /wp:buttons -->
@@ -210,7 +210,8 @@ class NK_Core {
 				'show_admin_column' => false,
 				'query_var'         => true,
 				'rewrite'           => array(
-					'slug'       => 'events',
+					// After deploy, re-save Permalinks to flush rewrite rules.
+					'slug'       => 'event-year',
 					'with_front' => false,
 				),
 			)
@@ -300,7 +301,8 @@ class NK_Core {
 				'show_admin_column' => false,
 				'query_var'         => true,
 				'rewrite'           => array(
-					'slug'       => 'closings',
+					// After deploy, re-save Permalinks to flush rewrite rules.
+					'slug'       => 'closing-year',
 					'with_front' => false,
 				),
 			)
