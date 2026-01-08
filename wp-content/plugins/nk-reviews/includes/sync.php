@@ -35,6 +35,16 @@ function nk_reviews_ensure_cron_scheduled() {
 	}
 }
 
+function nk_reviews_maybe_repair_cron_schedule() {
+	$transient_key = 'nk_reviews_schedule_check';
+	if ( get_transient( $transient_key ) ) {
+		return;
+	}
+
+	nk_reviews_ensure_cron_scheduled();
+	set_transient( $transient_key, 1, DAY_IN_SECONDS );
+}
+
 function nk_reviews_handle_cron_sync() {
 	$last_updated = (int) get_option( NK_REVIEWS_OPTION_LAST_UPDATED, 0 );
 	if ( $last_updated > 0 && ( current_time( 'timestamp' ) - $last_updated ) < ( 3 * DAY_IN_SECONDS ) ) {
