@@ -125,6 +125,46 @@ class NK_Core {
 <!-- /wp:group -->',
 			)
 		);
+
+		register_block_pattern(
+			'nk-core/disclosures-footer',
+			array(
+				'title'       => __( 'Disclosures Footer Strip', 'nk-core' ),
+				'description' => __( 'Footer disclosures with NMLS identifiers, Equal Housing Lender notice, and policy links.', 'nk-core' ),
+				'categories'  => array( 'nk-core' ),
+				'content'     => '<!-- wp:group {"tagName":"section","layout":{"type":"constrained"}} -->
+<section class="wp-block-group">
+<!-- wp:heading {"level":2} -->
+<h2>Disclosures</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Nan Kirkpatrick #212026</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Company NMLS ID: 218131</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:group {"layout":{"type":"flex","flexWrap":"wrap","verticalAlignment":"center"}} -->
+<div class="wp-block-group">
+<!-- wp:image {"sizeSlug":"full","linkDestination":"none","alt":"Equal Housing Lender logo placeholder"} -->
+<figure class="wp-block-image size-full"><img alt="Equal Housing Lender logo placeholder" /></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p>Equal Housing Lender</p>
+<!-- /wp:paragraph -->
+</div>
+<!-- /wp:group -->
+
+<!-- wp:paragraph -->
+<p><a href="#">Privacy Policy</a> | <a href="#">Government Disclosure</a> | <a href="#">Texas complaint/recovery fund</a></p>
+<!-- /wp:paragraph -->
+</section>
+<!-- /wp:group -->',
+			)
+		);
 	}
 
 	/**
