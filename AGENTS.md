@@ -39,3 +39,4 @@ Every PR must include:
 ## Testing
 - At minimum, run `php -l` on changed PHP files.
 - Add and use more tooling as it becomes available.
+- Required local check: `scripts/verify.sh`.
