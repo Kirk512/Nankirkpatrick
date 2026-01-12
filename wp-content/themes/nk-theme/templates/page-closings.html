@@ -1,0 +1,153 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"type":"default"}} -->
+<main class="wp-block-group">
+
+	<!-- wp:group {"tagName":"section","align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"backgroundColor":"primary","textColor":"white","layout":{"type":"constrained"}} -->
+	<section class="wp-block-group alignfull has-white-color has-primary-background-color has-text-color has-background" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--70)">
+		<!-- wp:heading {"textAlign":"center","level":1} -->
+		<h1 class="wp-block-heading has-text-align-center">Closings</h1>
+		<!-- /wp:heading -->
+		
+		<!-- wp:paragraph {"align":"center","fontSize":"large"} -->
+		<p class="has-text-align-center has-large-font-size">Celebrating successful closings and happy homeowners.</p>
+		<!-- /wp:paragraph -->
+	</section>
+	<!-- /wp:group -->
+
+	<!-- wp:group {"tagName":"section","align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"layout":{"type":"constrained"}} -->
+	<section class="wp-block-group alignfull" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--70)">
+		
+		<!-- wp:columns -->
+		<div class="wp-block-columns">
+			
+			<!-- wp:column -->
+			<div class="wp-block-column">
+				<!-- wp:heading {"level":2} -->
+				<h2 class="wp-block-heading">Your Closing Day</h2>
+				<!-- /wp:heading -->
+				
+				<!-- wp:paragraph -->
+				<p>Every closing represents the culmination of hard work, careful planning, and a shared commitment to making homeownership a reality. It's one of my favorite parts of the job—handing over the keys to your new home.</p>
+				<!-- /wp:paragraph -->
+				
+				<!-- wp:paragraph -->
+				<p>These photos capture just a few of the many families who have trusted me to guide them through the mortgage process. Each one represents a unique story of perseverance and achievement.</p>
+				<!-- /wp:paragraph -->
+			</div>
+			<!-- /wp:column -->
+			
+			<!-- wp:column -->
+			<div class="wp-block-column">
+				<!-- wp:heading {"level":2} -->
+				<h2 class="wp-block-heading">The Journey to Closing</h2>
+				<!-- /wp:heading -->
+				
+				<!-- wp:list -->
+				<ul class="wp-block-list">
+					<li><strong>Pre-Approval</strong> — Understanding your budget and options.</li>
+					<li><strong>Application</strong> — Gathering documents and submitting your loan.</li>
+					<li><strong>Processing</strong> — Verifying information and preparing your file.</li>
+					<li><strong>Underwriting</strong> — Final review and loan approval.</li>
+					<li><strong>Closing</strong> — Signing documents and getting your keys!</li>
+				</ul>
+				<!-- /wp:list -->
+			</div>
+			<!-- /wp:column -->
+			
+		</div>
+		<!-- /wp:columns -->
+		
+	</section>
+	<!-- /wp:group -->
+
+	<!-- wp:group {"tagName":"section","align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|70"}}},"backgroundColor":"secondary","layout":{"type":"constrained"}} -->
+	<section class="wp-block-group alignfull has-secondary-background-color has-background" style="padding-top:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--70)">
+		
+		<!-- wp:heading {"textAlign":"center","level":2} -->
+		<h2 class="wp-block-heading has-text-align-center">Recent Closings</h2>
+		<!-- /wp:heading -->
+		
+		<!-- wp:query {"queryId":50,"query":{"postType":"closing","perPage":6,"pages":0,"offset":0,"order":"desc","orderBy":"date","inherit":false},"align":"wide"} -->
+		<div class="wp-block-query alignwide">
+			
+			<!-- wp:post-template {"layout":{"type":"grid","columnCount":3}} -->
+				<!-- wp:group {"className":"nk-card","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"}},"border":{"radius":"8px"}},"backgroundColor":"white"} -->
+				<div class="wp-block-group nk-card has-white-background-color has-background" style="border-radius:8px;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
+					
+					<!-- wp:post-featured-image {"isLink":true,"aspectRatio":"4/3","className":"nk-card__image"} /-->
+					
+					<!-- wp:group {"className":"nk-card__content","style":{"spacing":{"padding":{"top":"var:preset|spacing|30","right":"var:preset|spacing|30","bottom":"var:preset|spacing|30","left":"var:preset|spacing|30"}}}} -->
+					<div class="wp-block-group nk-card__content" style="padding-top:var(--wp--preset--spacing--30);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)">
+						
+						<!-- wp:post-title {"level":3,"isLink":true,"className":"nk-card__title","fontSize":"medium"} /-->
+						
+						<!-- wp:post-date {"fontSize":"small"} /-->
+						
+					</div>
+					<!-- /wp:group -->
+					
+				</div>
+				<!-- /wp:group -->
+			<!-- /wp:post-template -->
+			
+			<!-- wp:query-no-results -->
+				<!-- wp:paragraph {"align":"center"} -->
+				<p class="has-text-align-center">No closings to display yet. Check back soon!</p>
+				<!-- /wp:paragraph -->
+			<!-- /wp:query-no-results -->
+			
+		</div>
+		<!-- /wp:query -->
+		
+		<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"var:preset|spacing|50"}}}} -->
+		<div class="wp-block-buttons" style="margin-top:var(--wp--preset--spacing--50)">
+			<!-- wp:button -->
+			<div class="wp-block-button"><a class="wp-block-button__link" href="/closings/">View All Closings</a></div>
+			<!-- /wp:button -->
+		</div>
+		<!-- /wp:buttons -->
+		
+	</section>
+	<!-- /wp:group -->
+
+	<!-- wp:group {"tagName":"section","align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|50","bottom":"var:preset|spacing|50"}}},"backgroundColor":"white","layout":{"type":"constrained"}} -->
+	<section class="wp-block-group alignfull has-white-background-color has-background" style="padding-top:var(--wp--preset--spacing--50);padding-bottom:var(--wp--preset--spacing--50)">
+		
+		<!-- wp:shortcode -->
+		[nk_closing_disclaimer]
+		<!-- /wp:shortcode -->
+		
+	</section>
+	<!-- /wp:group -->
+
+	<!-- wp:group {"tagName":"section","align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"backgroundColor":"primary","textColor":"white","layout":{"type":"constrained","contentSize":"600px"}} -->
+	<section class="wp-block-group alignfull has-white-color has-primary-background-color has-text-color has-background" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--70)">
+		
+		<!-- wp:heading {"textAlign":"center","level":2,"textColor":"white"} -->
+		<h2 class="wp-block-heading has-text-align-center has-white-color has-text-color">Ready to Be Our Next Success Story?</h2>
+		<!-- /wp:heading -->
+		
+		<!-- wp:paragraph {"align":"center"} -->
+		<p class="has-text-align-center">Your closing day is closer than you think. Let's get started on your journey to homeownership.</p>
+		<!-- /wp:paragraph -->
+		
+		<!-- wp:buttons {"layout":{"type":"flex","justifyContent":"center"}} -->
+		<div class="wp-block-buttons">
+			<!-- wp:button {"backgroundColor":"accent","textColor":"white"} -->
+			<div class="wp-block-button"><a class="wp-block-button__link has-white-color has-accent-background-color has-text-color has-background" href="https://www.applywithnan.com">Apply Online</a></div>
+			<!-- /wp:button -->
+			
+			<!-- wp:button {"className":"is-style-outline"} -->
+			<div class="wp-block-button is-style-outline"><a class="wp-block-button__link" href="/contact/">Contact Nan</a></div>
+			<!-- /wp:button -->
+		</div>
+		<!-- /wp:buttons -->
+		
+	</section>
+	<!-- /wp:group -->
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

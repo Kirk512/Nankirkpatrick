@@ -29,8 +29,19 @@ This status report summarizes completed work, gaps, risks/compliance concerns, a
 - NMLS/Equal Housing Lender requirements are represented in the blueprint and in the disclosures pattern. (`docs/BLUEPRINT.md`, `wp-content/plugins/nk-core/includes/class-nk-core.php::register_block_patterns`)
 
 ### Theme scaffolding
+- Complete FSE child theme with design system (CSS custom properties, color palette, typography). (`wp-content/themes/nk-theme/style.css`, `theme.json`)
 - Core templates exist for home, about, contact, reviews, disclosures, events/closings archives, and single CPTs. (`wp-content/themes/nk-theme/templates/`)
+- Blog/archive support with `home.html`, `archive.html`, `single.html` templates. (`wp-content/themes/nk-theme/templates/`)
+- 404 and search result pages created. (`wp-content/themes/nk-theme/templates/404.html`, `search.html`)
+- Generic page fallback template. (`wp-content/themes/nk-theme/templates/page.html`)
 - Disclosures page includes required NMLS identifiers and Equal Housing Lender messaging. (`wp-content/themes/nk-theme/templates/page-disclosures.html`)
+- Header template with sticky nav, NMLS display, and Apply CTA. (`wp-content/themes/nk-theme/parts/header.html`)
+- Footer template with 3-column layout, compliance bar (NMLS, Equal Housing), and legal links. (`wp-content/themes/nk-theme/parts/footer.html`)
+- Navigation menus registered (primary, footer, legal). (`wp-content/themes/nk-theme/functions.php`)
+- Block patterns registered for page-hero, about-section, services-grid, contact-section, testimonial. (`wp-content/themes/nk-theme/functions.php`)
+- Shortcodes for NMLS display and Equal Housing icon. (`wp-content/themes/nk-theme/functions.php`)
+- Client-side JavaScript for reviews toggle, smooth scroll, header effects. (`wp-content/themes/nk-theme/assets/js/theme.js`)
+- Equal Housing Lender SVG icon. (`wp-content/themes/nk-theme/assets/images/equal-housing-lender.svg`)
 
 ### Docs alignment
 - Blueprint requirements match implemented CPTs, disclosures, and reviews behavior. (`docs/BLUEPRINT.md`, `wp-content/plugins/nk-core/includes/class-nk-core.php`, `wp-content/plugins/nk-reviews/includes/shortcode.php`)
@@ -43,25 +54,25 @@ This status report summarizes completed work, gaps, risks/compliance concerns, a
 - [ ] Confirm PR template is enforced in workflow tooling (e.g., required checks on CI).
 
 ### Content build-out
-- [ ] Build Apply Online page/template and ensure CTA entry points go to https://www.applywithnan.com.
-- [ ] Build Blog landing page and post templates (beyond `index.html`).
-- [ ] Build Events/Closings landing page content and navigation wiring.
-- [ ] Build Reviews page content using the reviews shortcode pattern.
-- [ ] Assemble global navigation with the required pages and disclosure links.
+- [x] ~~Build Apply Online page/template and ensure CTA entry points go to https://www.applywithnan.com.~~ (CTAs wired throughout templates)
+- [x] ~~Build Blog landing page and post templates (beyond `index.html`).~~ (`home.html`, `single.html`, `archive.html`)
+- [x] ~~Build Events/Closings landing page content and navigation wiring.~~ (`page-events.html`, `page-closings.html`)
+- [x] ~~Build Reviews page content using the reviews shortcode pattern.~~ (`page-reviews.html`)
+- [ ] Assemble global navigation with the required pages and disclosure links (requires WP Admin).
 
 ### Compliance & disclosures
-- [ ] Confirm disclosures/footer components are used site-wide (header/footer templates).
-- [ ] Confirm closing disclaimer appears on closing templates and/or in layouts.
+- [x] ~~Confirm disclosures/footer components are used site-wide (header/footer templates).~~ (Footer pattern with NMLS/Equal Housing in all templates)
+- [x] ~~Confirm closing disclaimer appears on closing templates and/or in layouts.~~ (`single-closing.html`)
 
 ### QA & launch
 - [ ] Run a pre-launch checklist for accessibility, performance, and compliance.
 
 ## Risks / compliance concerns
 
-- **Disclosure visibility risk**: NMLS/Equal Housing Lender copy exists in patterns and the disclosures page, but ensuring it’s in the live header/footer templates is still required for site-wide visibility.
-- **Content completion risk**: Required pages (Apply Online, Blog) are not fully built or templated, which may delay launch readiness.
+- **Disclosure visibility**: ✅ RESOLVED - NMLS/Equal Housing Lender copy now in header and footer template parts, visible site-wide.
+- **Content completion**: ✅ MOSTLY RESOLVED - All core page templates built. Events/Closings landing pages and navigation wiring remain.
 - **Operational risk**: Reviews sync depends on OAuth secrets and WP-Cron; schedule drift or missing credentials would stop updates.
 
 ## Next steps (PR-sized tasks)
 
-See `docs/TODO.md` for the next 10 scoped tasks with acceptance criteria and tests.
+See `docs/TODO.md` for the remaining scoped tasks with acceptance criteria and tests.

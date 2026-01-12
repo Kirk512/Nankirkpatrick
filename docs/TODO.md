@@ -2,56 +2,43 @@
 
 Each task below is scoped to stay under ~300 lines of change. Acceptance criteria and required tests are listed for each task.
 
-1. **Add Apply Online page template + CTA wiring**
-   - **Scope**: Add `page-apply-online.html` template and ensure CTA buttons link to https://www.applywithnan.com.
-   - **Acceptance criteria**:
-     - Apply Online page exists and renders with primary CTA.
-     - All CTA buttons on the page use applywithnan.com.
-     - No disclosure copy removed.
-   - **Tests**:
-     - `scripts/verify.sh`
-     - `php -l wp-content/plugins/nk-core/includes/class-nk-core.php`
+## Completed Tasks ✅
 
-2. **Build Blog landing page template**
-   - **Scope**: Add a dedicated `page-blog.html` or customize `index.html` for blog landing.
-   - **Acceptance criteria**:
-     - Blog page lists latest posts with heading and summary.
-     - Accessible headings and link text are used.
-   - **Tests**:
-     - `scripts/verify.sh`
+1. ~~**Add Apply Online page template + CTA wiring**~~ ✅
+   - CTAs throughout site link to https://www.applywithnan.com
+   - Header includes Apply CTA button
+   - All templates include Apply Online links
 
-3. **Add Events landing page layout**
-   - **Scope**: Add a page template that introduces Events and links to the Events archive.
-   - **Acceptance criteria**:
-     - Events landing page exists with CTA to events archive.
-     - No changes to CPT slugs or taxonomies.
-   - **Tests**:
-     - `scripts/verify.sh`
+2. ~~**Build Blog landing page template**~~ ✅
+   - Added `home.html` (blog index), `archive.html`, `single.html`
+   - Posts display with featured image, date, excerpt, pagination
 
-4. **Add Closings landing page layout + disclaimer placement**
-   - **Scope**: Create a Closings landing page and ensure closing disclaimers are visible on single closing pages (if not already).
-   - **Acceptance criteria**:
-     - Closing disclaimer appears on single closing layout.
-     - Closing landing page contains compliance copy.
-   - **Tests**:
-     - `scripts/verify.sh`
+3. ~~**Ensure disclosures footer pattern is used site-wide**~~ ✅
+   - Footer template includes NMLS IDs and Equal Housing Lender
+   - All templates include header/footer parts
 
-5. **Wire global navigation links**
+4. ~~**Add disclosure page references to footer links**~~ ✅
+   - Footer links point to `/disclosures/`, `/privacy-policy/`, `/texas-recovery-fund/`
+
+## Remaining Tasks
+
+5. ~~**Add Events landing page layout**~~ ✅
+   - Created `page-events.html` with intro content, recent events grid, CTA
+
+6. ~~**Add Closings landing page layout + disclaimer placement**~~ ✅
+   - Created `page-closings.html` with intro, recent closings grid, disclaimer shortcode, CTA
+   - Closing disclaimer already on single closing template
+
+7. **Wire global navigation links**
    - **Scope**: Update header template or navigation block to include core pages and disclosures.
    - **Acceptance criteria**:
      - Navigation includes Home, About, Apply Online, Reviews, Events, Closings, Blog, Contact, Disclosures.
      - Links are accessible and keyboard navigable.
    - **Tests**:
      - `scripts/verify.sh`
+   - **Note**: Navigation menus are registered in `functions.php`. This task requires WordPress admin setup to create and assign menus.
 
-6. **Ensure disclosures footer pattern is used site-wide**
-   - **Scope**: Insert the disclosures footer pattern into `footer.html` or global template part.
-   - **Acceptance criteria**:
-     - Footer shows Nan/Company NMLS and Equal Housing Lender content on all templates.
-   - **Tests**:
-     - `scripts/verify.sh`
-
-7. **Document reviews admin workflow**
+8. **Document reviews admin workflow**
    - **Scope**: Expand `docs/REVIEWS_SETUP.md` with troubleshooting for cron/credentials.
    - **Acceptance criteria**:
      - Troubleshooting section includes common errors and remediation.
@@ -59,7 +46,7 @@ Each task below is scoped to stay under ~300 lines of change. Acceptance criteri
    - **Tests**:
      - `scripts/verify.sh`
 
-8. **Add accessibility pass to templates**
+9. **Add accessibility pass to templates**
    - **Scope**: Review templates for headings/alt text; fix missing alt text in theme assets.
    - **Acceptance criteria**:
      - All images in templates include alt text.
@@ -67,16 +54,20 @@ Each task below is scoped to stay under ~300 lines of change. Acceptance criteri
    - **Tests**:
      - `scripts/verify.sh`
 
-9. **Add disclosure page references to footer links**
-   - **Scope**: Replace placeholder disclosure links in patterns/templates with real URLs.
-   - **Acceptance criteria**:
-     - Footer links point to `/disclosures/`, `/privacy-policy/`, `/texas-recovery-fund/`.
-   - **Tests**:
-     - `scripts/verify.sh`
+10. ~~**Create a launch readiness checklist**~~ ✅
+    - Created `docs/LAUNCH_CHECKLIST.md` with comprehensive checklist
+    - Covers: theme activation, navigation, compliance, reviews, content, accessibility, performance, SEO, security
 
-10. **Create a launch readiness checklist**
-    - **Scope**: Add `docs/LAUNCH_CHECKLIST.md` with compliance, QA, and performance checks.
-    - **Acceptance criteria**:
-      - Checklist covers disclosures, CTA, reviews sync, and accessibility.
-    - **Tests**:
-      - `scripts/verify.sh`
+## WordPress Admin Tasks (Post-Activation)
+
+These tasks require WordPress admin access after theme activation:
+
+- [ ] Activate nk-theme in Appearance → Themes
+- [ ] Create pages: Home, About, Reviews, Contact, Disclosures, Privacy Policy, Texas Recovery Fund
+- [ ] Set Home as front page, Blog as posts page in Settings → Reading
+- [ ] Create and assign Primary navigation menu
+- [ ] Create and assign Footer navigation menu
+- [ ] Create and assign Legal navigation menu
+- [ ] Configure NMLS IDs in Customize → NK Theme Compliance Settings
+- [ ] Add Google OAuth credentials in Settings → NK Reviews
+- [ ] Run manual reviews sync to populate cache
