@@ -20,6 +20,7 @@ The frontend always renders from this cache, and sync failures keep the previous
 
 1. Go to **Settings → NK Reviews**.
 2. Enter the **Account ID**, **Location ID**, **OAuth Client ID**, **OAuth Client Secret**, and **OAuth Refresh Token**.
+   - Secret fields are masked and can be left blank to keep existing values.
 3. Click **Save Settings**.
 4. Click **Sync Now** to pull reviews immediately (the frontend still renders from cache), or wait for the weekly WP-Cron run.
    - Cron syncs run weekly and `nk_reviews_handle_cron_sync()` skips the fetch if the cache was updated within the last 3 days to avoid unnecessary API calls.
