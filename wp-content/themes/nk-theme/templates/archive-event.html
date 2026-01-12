@@ -1,0 +1,86 @@
+<!-- wp:template-part {"slug":"header","tagName":"header"} /-->
+
+<!-- wp:group {"tagName":"main","layout":{"type":"default"}} -->
+<main class="wp-block-group">
+
+	<!-- wp:group {"tagName":"section","align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"backgroundColor":"primary","textColor":"white","layout":{"type":"constrained"}} -->
+	<section class="wp-block-group alignfull has-white-color has-primary-background-color has-text-color has-background" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--70)">
+		<!-- wp:heading {"textAlign":"center","level":1} -->
+		<h1 class="wp-block-heading has-text-align-center">Events</h1>
+		<!-- /wp:heading -->
+		
+		<!-- wp:paragraph {"align":"center","fontSize":"large"} -->
+		<p class="has-text-align-center has-large-font-size">A look back at community events and celebrations.</p>
+		<!-- /wp:paragraph -->
+	</section>
+	<!-- /wp:group -->
+
+	<!-- wp:group {"tagName":"section","align":"full","style":{"spacing":{"padding":{"top":"var:preset|spacing|70","bottom":"var:preset|spacing|70"}}},"layout":{"type":"constrained"}} -->
+	<section class="wp-block-group alignfull" style="padding-top:var(--wp--preset--spacing--70);padding-bottom:var(--wp--preset--spacing--70)">
+		
+		<!-- wp:heading {"textAlign":"center","level":2} -->
+		<h2 class="wp-block-heading has-text-align-center">Browse by Year</h2>
+		<!-- /wp:heading -->
+		
+		<!-- wp:paragraph {"align":"center","fontSize":"small"} -->
+		<p class="has-text-align-center has-small-font-size">Select a year to view events from that time period.</p>
+		<!-- /wp:paragraph -->
+		
+		<!-- wp:group {"className":"nk-year-filter","layout":{"type":"flex","flexWrap":"wrap","justifyContent":"center"},"style":{"spacing":{"margin":{"bottom":"var:preset|spacing|50"}}}} -->
+		<div class="wp-block-group nk-year-filter" style="margin-bottom:var(--wp--preset--spacing--50)">
+			<!-- wp:term-link {"term":"event_year"} /-->
+		</div>
+		<!-- /wp:group -->
+		
+		<!-- wp:query {"queryId":1,"query":{"postType":"event","perPage":12,"pages":0,"offset":0,"order":"desc","orderBy":"date","inherit":true},"align":"wide"} -->
+		<div class="wp-block-query alignwide">
+			
+			<!-- wp:post-template {"layout":{"type":"grid","columnCount":3}} -->
+				<!-- wp:group {"className":"nk-card","style":{"spacing":{"padding":{"top":"0","right":"0","bottom":"0","left":"0"}},"border":{"radius":"8px"}},"backgroundColor":"white"} -->
+				<div class="wp-block-group nk-card has-white-background-color has-background" style="border-radius:8px;padding-top:0;padding-right:0;padding-bottom:0;padding-left:0">
+					
+					<!-- wp:post-featured-image {"isLink":true,"aspectRatio":"4/3","className":"nk-card__image"} /-->
+					
+					<!-- wp:group {"className":"nk-card__content","style":{"spacing":{"padding":{"top":"var:preset|spacing|30","right":"var:preset|spacing|30","bottom":"var:preset|spacing|30","left":"var:preset|spacing|30"}}}} -->
+					<div class="wp-block-group nk-card__content" style="padding-top:var(--wp--preset--spacing--30);padding-right:var(--wp--preset--spacing--30);padding-bottom:var(--wp--preset--spacing--30);padding-left:var(--wp--preset--spacing--30)">
+						
+						<!-- wp:post-title {"level":3,"isLink":true,"className":"nk-card__title"} /-->
+						
+						<!-- wp:group {"className":"nk-card__meta","layout":{"type":"flex","flexWrap":"wrap"}} -->
+						<div class="wp-block-group nk-card__meta">
+							<!-- wp:post-date {"fontSize":"small"} /-->
+							<!-- wp:post-terms {"term":"event_year","fontSize":"small"} /-->
+						</div>
+						<!-- /wp:group -->
+						
+						<!-- wp:post-excerpt {"moreText":"View Event →","excerptLength":20} /-->
+						
+					</div>
+					<!-- /wp:group -->
+					
+				</div>
+				<!-- /wp:group -->
+			<!-- /wp:post-template -->
+			
+			<!-- wp:query-pagination {"layout":{"type":"flex","justifyContent":"center"},"style":{"spacing":{"margin":{"top":"var:preset|spacing|50"}}}} -->
+				<!-- wp:query-pagination-previous /-->
+				<!-- wp:query-pagination-numbers /-->
+				<!-- wp:query-pagination-next /-->
+			<!-- /wp:query-pagination -->
+			
+			<!-- wp:query-no-results -->
+				<!-- wp:paragraph {"align":"center"} -->
+				<p class="has-text-align-center">No events found. Check back soon!</p>
+				<!-- /wp:paragraph -->
+			<!-- /wp:query-no-results -->
+			
+		</div>
+		<!-- /wp:query -->
+		
+	</section>
+	<!-- /wp:group -->
+
+</main>
+<!-- /wp:group -->
+
+<!-- wp:template-part {"slug":"footer","tagName":"footer"} /-->

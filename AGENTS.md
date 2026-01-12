@@ -6,6 +6,13 @@ These rules apply to all contributions in this repository.
 - **Always open a PR**; never push directly to `main`.
 - Each PR must be **small and focused** (max **300 lines changed** unless explicitly justified in the PR).
 
+## Agent execution rules (anti-churn)
+- **No command churn**: do not run multiple variants of failing commands hoping one works.
+- **Fail fast**: if a command fails for environment reasons (PATH, permissions, quoting), stop within **2 attempts**, summarize the failure, and switch to a simpler diagnostic or ask for the missing detail.
+- **Ask for known paths early**: on Windows, if a dependency is likely installed but not on PATH (e.g., XAMPP PHP), ask the user for the install path immediately instead of guessing repeatedly.
+- **Prefer deterministic checks**: use `Test-Path`/`where`/`command -v` before invoking tools; avoid complex quoting that is brittle across PowerShell/Git Bash.
+- **State assumptions**: before relying on a toolchain (bash/php/rg), explicitly state what is required and what was detected.
+
 ## PR requirements
 Every PR must include:
 - **Summary**

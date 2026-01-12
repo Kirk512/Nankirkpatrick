@@ -1,0 +1,784 @@
+/*
+Theme Name: NK Theme
+Theme URI: https://nankirkpatrick.com
+Description: Custom block theme for Nan Kirkpatrick Mortgage. Professional, accessible, and compliance-ready.
+Author: NK Development
+Author URI: https://nankirkpatrick.com
+Template: twentytwentyfour
+Version: 1.0.0
+Requires at least: 6.4
+Tested up to: 6.7
+Requires PHP: 8.0
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: nk-theme
+Tags: block-patterns, block-styles, custom-colors, custom-logo, custom-menu, editor-style, full-site-editing, one-column, template-editing, translation-ready, wide-blocks
+*/
+
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+1.0 CSS Custom Properties (Design Tokens)
+2.0 Global Resets & Base Styles
+3.0 Typography
+4.0 Navigation
+5.0 Header
+6.0 Footer
+7.0 Buttons & CTAs
+8.0 Forms
+9.0 Reviews Component
+10.0 Events & Closings
+11.0 Disclosures
+12.0 Utilities
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+1.0 CSS Custom Properties (Design Tokens)
+--------------------------------------------------------------*/
+:root {
+	/* Primary palette - Professional navy/gold */
+	--nk-color-primary: #1e3a5f;
+	--nk-color-primary-dark: #142942;
+	--nk-color-primary-light: #2d4a6f;
+	--nk-color-accent: #c9a227;
+	--nk-color-accent-dark: #a8861f;
+	--nk-color-accent-light: #dbb84a;
+
+	/* Neutrals */
+	--nk-color-white: #ffffff;
+	--nk-color-off-white: #f8f9fa;
+	--nk-color-gray-100: #f1f3f5;
+	--nk-color-gray-200: #e9ecef;
+	--nk-color-gray-300: #dee2e6;
+	--nk-color-gray-400: #ced4da;
+	--nk-color-gray-500: #adb5bd;
+	--nk-color-gray-600: #6c757d;
+	--nk-color-gray-700: #495057;
+	--nk-color-gray-800: #343a40;
+	--nk-color-gray-900: #212529;
+	--nk-color-black: #000000;
+
+	/* Semantic colors */
+	--nk-color-success: #28a745;
+	--nk-color-warning: #ffc107;
+	--nk-color-error: #dc3545;
+	--nk-color-info: #17a2b8;
+
+	/* Typography */
+	--nk-font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	--nk-font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
+	--nk-font-mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+
+	/* Font sizes - fluid typography */
+	--nk-text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+	--nk-text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+	--nk-text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+	--nk-text-lg: clamp(1.125rem, 1rem + 0.6vw, 1.25rem);
+	--nk-text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+	--nk-text-2xl: clamp(1.5rem, 1.25rem + 1.25vw, 2rem);
+	--nk-text-3xl: clamp(1.875rem, 1.5rem + 1.875vw, 2.5rem);
+	--nk-text-4xl: clamp(2.25rem, 1.75rem + 2.5vw, 3.5rem);
+
+	/* Spacing */
+	--nk-space-xs: 0.25rem;
+	--nk-space-sm: 0.5rem;
+	--nk-space-md: 1rem;
+	--nk-space-lg: 1.5rem;
+	--nk-space-xl: 2rem;
+	--nk-space-2xl: 3rem;
+	--nk-space-3xl: 4rem;
+	--nk-space-4xl: 6rem;
+
+	/* Border radius */
+	--nk-radius-sm: 0.25rem;
+	--nk-radius-md: 0.5rem;
+	--nk-radius-lg: 1rem;
+	--nk-radius-full: 9999px;
+
+	/* Shadows */
+	--nk-shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+	--nk-shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+	--nk-shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+	--nk-shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+	/* Transitions */
+	--nk-transition-fast: 150ms ease;
+	--nk-transition-base: 250ms ease;
+	--nk-transition-slow: 350ms ease;
+
+	/* Layout */
+	--nk-content-width: 1200px;
+	--nk-content-narrow: 800px;
+	--nk-header-height: 80px;
+}
+
+/*--------------------------------------------------------------
+2.0 Global Resets & Base Styles
+--------------------------------------------------------------*/
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	font-family: var(--nk-font-primary);
+	font-size: var(--nk-text-base);
+	line-height: 1.6;
+	color: var(--nk-color-gray-800);
+	background-color: var(--nk-color-white);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+}
+
+a {
+	color: var(--nk-color-primary);
+	text-decoration: none;
+	transition: color var(--nk-transition-fast);
+}
+
+a:hover,
+a:focus {
+	color: var(--nk-color-accent);
+}
+
+a:focus-visible {
+	outline: 2px solid var(--nk-color-accent);
+	outline-offset: 2px;
+}
+
+/*--------------------------------------------------------------
+3.0 Typography
+--------------------------------------------------------------*/
+h1, h2, h3, h4, h5, h6 {
+	font-family: var(--nk-font-heading);
+	font-weight: 600;
+	line-height: 1.2;
+	color: var(--nk-color-primary);
+	margin-top: 0;
+}
+
+h1 { font-size: var(--nk-text-4xl); }
+h2 { font-size: var(--nk-text-3xl); }
+h3 { font-size: var(--nk-text-2xl); }
+h4 { font-size: var(--nk-text-xl); }
+h5 { font-size: var(--nk-text-lg); }
+h6 { font-size: var(--nk-text-base); }
+
+p {
+	margin-top: 0;
+	margin-bottom: var(--nk-space-md);
+}
+
+.lead {
+	font-size: var(--nk-text-xl);
+	color: var(--nk-color-gray-600);
+}
+
+/*--------------------------------------------------------------
+4.0 Navigation
+--------------------------------------------------------------*/
+.nk-nav-primary {
+	display: flex;
+	align-items: center;
+	gap: var(--nk-space-xl);
+}
+
+.nk-nav-primary a {
+	font-weight: 500;
+	color: var(--nk-color-gray-700);
+	padding: var(--nk-space-sm) 0;
+	position: relative;
+}
+
+.nk-nav-primary a::after {
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 0;
+	height: 2px;
+	background-color: var(--nk-color-accent);
+	transition: width var(--nk-transition-base);
+}
+
+.nk-nav-primary a:hover::after,
+.nk-nav-primary a[aria-current="page"]::after {
+	width: 100%;
+}
+
+.nk-nav-primary a[aria-current="page"] {
+	color: var(--nk-color-primary);
+}
+
+/*--------------------------------------------------------------
+5.0 Header
+--------------------------------------------------------------*/
+.nk-site-header {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	background-color: var(--nk-color-white);
+	border-bottom: 1px solid var(--nk-color-gray-200);
+	box-shadow: var(--nk-shadow-sm);
+}
+
+.nk-header-inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	max-width: var(--nk-content-width);
+	margin: 0 auto;
+	padding: var(--nk-space-md) var(--nk-space-xl);
+	min-height: var(--nk-header-height);
+}
+
+.nk-site-logo {
+	font-family: var(--nk-font-heading);
+	font-size: var(--nk-text-xl);
+	font-weight: 700;
+	color: var(--nk-color-primary);
+}
+
+.nk-header-nmls {
+	font-size: var(--nk-text-xs);
+	color: var(--nk-color-gray-600);
+	margin-left: var(--nk-space-md);
+}
+
+.nk-header-cta {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--nk-space-sm);
+	background-color: var(--nk-color-accent);
+	color: var(--nk-color-white);
+	padding: var(--nk-space-sm) var(--nk-space-lg);
+	border-radius: var(--nk-radius-md);
+	font-weight: 600;
+	transition: background-color var(--nk-transition-fast);
+}
+
+.nk-header-cta:hover {
+	background-color: var(--nk-color-accent-dark);
+	color: var(--nk-color-white);
+}
+
+/*--------------------------------------------------------------
+6.0 Footer
+--------------------------------------------------------------*/
+.nk-site-footer {
+	background-color: var(--nk-color-primary);
+	color: var(--nk-color-white);
+	padding: var(--nk-space-3xl) 0 var(--nk-space-xl);
+}
+
+.nk-footer-inner {
+	max-width: var(--nk-content-width);
+	margin: 0 auto;
+	padding: 0 var(--nk-space-xl);
+}
+
+.nk-footer-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+	gap: var(--nk-space-2xl);
+	margin-bottom: var(--nk-space-2xl);
+}
+
+.nk-footer-section h3 {
+	color: var(--nk-color-white);
+	font-size: var(--nk-text-lg);
+	margin-bottom: var(--nk-space-md);
+}
+
+.nk-footer-section p,
+.nk-footer-section a {
+	color: var(--nk-color-gray-300);
+	font-size: var(--nk-text-sm);
+}
+
+.nk-footer-section a:hover {
+	color: var(--nk-color-accent);
+}
+
+.nk-footer-section ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.nk-footer-section li {
+	margin-bottom: var(--nk-space-sm);
+}
+
+/* NMLS & Compliance Section */
+.nk-footer-compliance {
+	border-top: 1px solid var(--nk-color-primary-light);
+	padding-top: var(--nk-space-xl);
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--nk-space-lg);
+}
+
+.nk-nmls-block {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--nk-space-lg);
+}
+
+.nk-nmls-item {
+	font-size: var(--nk-text-sm);
+	color: var(--nk-color-gray-300);
+}
+
+.nk-nmls-item strong {
+	color: var(--nk-color-white);
+}
+
+.nk-equal-housing {
+	display: flex;
+	align-items: center;
+	gap: var(--nk-space-sm);
+}
+
+.nk-equal-housing-logo {
+	width: 40px;
+	height: auto;
+}
+
+.nk-equal-housing-text {
+	font-size: var(--nk-text-xs);
+	color: var(--nk-color-gray-300);
+	max-width: 200px;
+}
+
+/* Footer bottom bar */
+.nk-footer-bottom {
+	border-top: 1px solid var(--nk-color-primary-light);
+	margin-top: var(--nk-space-xl);
+	padding-top: var(--nk-space-lg);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	align-items: center;
+	gap: var(--nk-space-md);
+}
+
+.nk-footer-copyright {
+	font-size: var(--nk-text-xs);
+	color: var(--nk-color-gray-400);
+}
+
+.nk-footer-legal {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--nk-space-md);
+}
+
+.nk-footer-legal a {
+	font-size: var(--nk-text-xs);
+	color: var(--nk-color-gray-400);
+}
+
+.nk-footer-legal a:hover {
+	color: var(--nk-color-accent);
+}
+
+/*--------------------------------------------------------------
+7.0 Buttons & CTAs
+--------------------------------------------------------------*/
+.wp-block-button__link,
+.nk-button {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--nk-space-sm);
+	padding: var(--nk-space-md) var(--nk-space-xl);
+	font-family: var(--nk-font-primary);
+	font-size: var(--nk-text-base);
+	font-weight: 600;
+	text-decoration: none;
+	border-radius: var(--nk-radius-md);
+	border: none;
+	cursor: pointer;
+	transition: all var(--nk-transition-fast);
+}
+
+/* Primary button (accent/gold) */
+.wp-block-button.is-style-fill .wp-block-button__link,
+.nk-button--primary {
+	background-color: var(--nk-color-accent);
+	color: var(--nk-color-white);
+}
+
+.wp-block-button.is-style-fill .wp-block-button__link:hover,
+.nk-button--primary:hover {
+	background-color: var(--nk-color-accent-dark);
+	color: var(--nk-color-white);
+	transform: translateY(-1px);
+	box-shadow: var(--nk-shadow-md);
+}
+
+/* Secondary button (navy) */
+.nk-button--secondary {
+	background-color: var(--nk-color-primary);
+	color: var(--nk-color-white);
+}
+
+.nk-button--secondary:hover {
+	background-color: var(--nk-color-primary-dark);
+	color: var(--nk-color-white);
+}
+
+/* Outline button */
+.wp-block-button.is-style-outline .wp-block-button__link,
+.nk-button--outline {
+	background-color: transparent;
+	border: 2px solid var(--nk-color-primary);
+	color: var(--nk-color-primary);
+}
+
+.wp-block-button.is-style-outline .wp-block-button__link:hover,
+.nk-button--outline:hover {
+	background-color: var(--nk-color-primary);
+	color: var(--nk-color-white);
+}
+
+/*--------------------------------------------------------------
+8.0 Forms
+--------------------------------------------------------------*/
+.nk-form-group {
+	margin-bottom: var(--nk-space-lg);
+}
+
+.nk-form-label {
+	display: block;
+	font-weight: 500;
+	margin-bottom: var(--nk-space-sm);
+	color: var(--nk-color-gray-700);
+}
+
+.nk-form-input,
+.nk-form-textarea {
+	width: 100%;
+	padding: var(--nk-space-md);
+	font-family: var(--nk-font-primary);
+	font-size: var(--nk-text-base);
+	border: 1px solid var(--nk-color-gray-300);
+	border-radius: var(--nk-radius-md);
+	transition: border-color var(--nk-transition-fast), box-shadow var(--nk-transition-fast);
+}
+
+.nk-form-input:focus,
+.nk-form-textarea:focus {
+	outline: none;
+	border-color: var(--nk-color-accent);
+	box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15);
+}
+
+/*--------------------------------------------------------------
+9.0 Reviews Component
+--------------------------------------------------------------*/
+.nk-reviews {
+	padding: var(--nk-space-xl) 0;
+}
+
+.nk-reviews__summary {
+	background-color: var(--nk-color-gray-100);
+	padding: var(--nk-space-lg);
+	border-radius: var(--nk-radius-md);
+	margin-bottom: var(--nk-space-xl);
+}
+
+.nk-reviews__summary p {
+	margin-bottom: var(--nk-space-sm);
+}
+
+.nk-reviews__filters {
+	margin-bottom: var(--nk-space-lg);
+}
+
+.nk-reviews__toggle {
+	background-color: var(--nk-color-gray-200);
+	border: none;
+	padding: var(--nk-space-sm) var(--nk-space-lg);
+	border-radius: var(--nk-radius-full);
+	font-size: var(--nk-text-sm);
+	cursor: pointer;
+	transition: all var(--nk-transition-fast);
+}
+
+.nk-reviews__toggle:hover {
+	background-color: var(--nk-color-gray-300);
+}
+
+.nk-reviews__toggle[aria-pressed="true"] {
+	background-color: var(--nk-color-primary);
+	color: var(--nk-color-white);
+}
+
+.nk-reviews__list {
+	display: grid;
+	gap: var(--nk-space-lg);
+}
+
+.nk-reviews__item {
+	background-color: var(--nk-color-white);
+	border: 1px solid var(--nk-color-gray-200);
+	border-radius: var(--nk-radius-md);
+	padding: var(--nk-space-lg);
+	box-shadow: var(--nk-shadow-sm);
+	transition: box-shadow var(--nk-transition-fast);
+}
+
+.nk-reviews__item:hover {
+	box-shadow: var(--nk-shadow-md);
+}
+
+.nk-reviews__item[data-matches="0"] {
+	display: none;
+}
+
+.nk-reviews__item.show-all,
+.nk-reviews[data-show-all="true"] .nk-reviews__item[data-matches="0"] {
+	display: block;
+}
+
+.nk-reviews__meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: var(--nk-space-md);
+	margin-bottom: var(--nk-space-sm);
+}
+
+.nk-reviews__author {
+	color: var(--nk-color-primary);
+}
+
+.nk-reviews__rating {
+	color: var(--nk-color-accent);
+}
+
+.nk-reviews__date {
+	color: var(--nk-color-gray-500);
+	font-size: var(--nk-text-sm);
+}
+
+.nk-reviews__text {
+	color: var(--nk-color-gray-700);
+	line-height: 1.7;
+}
+
+/*--------------------------------------------------------------
+10.0 Events & Closings
+--------------------------------------------------------------*/
+/* Archive grid */
+.nk-archive-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	gap: var(--nk-space-xl);
+}
+
+/* Year filter */
+.nk-year-filter {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--nk-space-sm);
+	margin-bottom: var(--nk-space-2xl);
+}
+
+.nk-year-filter a {
+	padding: var(--nk-space-sm) var(--nk-space-lg);
+	background-color: var(--nk-color-gray-100);
+	border-radius: var(--nk-radius-full);
+	font-size: var(--nk-text-sm);
+	font-weight: 500;
+}
+
+.nk-year-filter a:hover,
+.nk-year-filter a[aria-current="page"] {
+	background-color: var(--nk-color-primary);
+	color: var(--nk-color-white);
+}
+
+/* Card styles */
+.nk-card {
+	background-color: var(--nk-color-white);
+	border-radius: var(--nk-radius-lg);
+	overflow: hidden;
+	box-shadow: var(--nk-shadow-md);
+	transition: transform var(--nk-transition-fast), box-shadow var(--nk-transition-fast);
+}
+
+.nk-card:hover {
+	transform: translateY(-4px);
+	box-shadow: var(--nk-shadow-lg);
+}
+
+.nk-card__image {
+	aspect-ratio: 4/3;
+	overflow: hidden;
+}
+
+.nk-card__image img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	transition: transform var(--nk-transition-slow);
+}
+
+.nk-card:hover .nk-card__image img {
+	transform: scale(1.05);
+}
+
+.nk-card__content {
+	padding: var(--nk-space-lg);
+}
+
+.nk-card__title {
+	font-size: var(--nk-text-xl);
+	margin-bottom: var(--nk-space-sm);
+}
+
+.nk-card__meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--nk-space-md);
+	font-size: var(--nk-text-sm);
+	color: var(--nk-color-gray-600);
+	margin-bottom: var(--nk-space-md);
+}
+
+/* Closing disclaimer */
+.nk-closing-disclaimer {
+	background-color: var(--nk-color-gray-100);
+	border-left: 4px solid var(--nk-color-accent);
+	padding: var(--nk-space-md) var(--nk-space-lg);
+	font-size: var(--nk-text-sm);
+	color: var(--nk-color-gray-600);
+	font-style: italic;
+	margin-top: var(--nk-space-xl);
+}
+
+/*--------------------------------------------------------------
+11.0 Disclosures
+--------------------------------------------------------------*/
+.nk-disclosure-page {
+	max-width: var(--nk-content-narrow);
+	margin: 0 auto;
+	padding: var(--nk-space-2xl) var(--nk-space-xl);
+}
+
+.nk-disclosure-page h1 {
+	margin-bottom: var(--nk-space-xl);
+}
+
+.nk-disclosure-page h2 {
+	font-size: var(--nk-text-xl);
+	margin-top: var(--nk-space-2xl);
+	margin-bottom: var(--nk-space-md);
+	padding-bottom: var(--nk-space-sm);
+	border-bottom: 2px solid var(--nk-color-gray-200);
+}
+
+.nk-disclosure-page ul {
+	padding-left: var(--nk-space-xl);
+}
+
+.nk-disclosure-page li {
+	margin-bottom: var(--nk-space-sm);
+}
+
+/*--------------------------------------------------------------
+12.0 Utilities
+--------------------------------------------------------------*/
+.nk-container {
+	max-width: var(--nk-content-width);
+	margin: 0 auto;
+	padding: 0 var(--nk-space-xl);
+}
+
+.nk-container--narrow {
+	max-width: var(--nk-content-narrow);
+}
+
+.nk-section {
+	padding: var(--nk-space-3xl) 0;
+}
+
+.nk-section--alt {
+	background-color: var(--nk-color-gray-100);
+}
+
+.nk-text-center {
+	text-align: center;
+}
+
+.nk-visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* Skip link for accessibility */
+.nk-skip-link {
+	position: absolute;
+	top: -100%;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: var(--nk-color-primary);
+	color: var(--nk-color-white);
+	padding: var(--nk-space-md) var(--nk-space-xl);
+	border-radius: var(--nk-radius-md);
+	z-index: 1000;
+	transition: top var(--nk-transition-fast);
+}
+
+.nk-skip-link:focus {
+	top: var(--nk-space-md);
+	color: var(--nk-color-white);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+	:root {
+		--nk-header-height: 70px;
+	}
+
+	.nk-header-inner {
+		padding: var(--nk-space-sm) var(--nk-space-md);
+	}
+
+	.nk-footer-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.nk-footer-compliance {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+
+	.nk-archive-grid {
+		grid-template-columns: 1fr;
+	}
+}
